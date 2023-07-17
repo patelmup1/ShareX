@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}File Downloader{% endblock %}
+{% block style %}
+<style>
+
+    .file-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .file-list li {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .file-list li:hover {
+        background-color: #f2f2f2;
+    }
+
+    .file-list li img {
+        display: block;
+        margin: 0 auto;
+        width: 64px;
+        height: 64px;
+    }
+
+    #download-button {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #download-button:hover {
+        background-color: #45a049;
+    }
+</style>
+<script>
+    var selectedFile = null;
+
+    // Add click event listener to each file item
+    var fileItems = document.querySelectorAll('.file-list li');
+    fileItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            // Remove the active class from all items
+            fileItems.forEach(function (item) {
+                item.classList.remove('active');
+            });
+
+            // Set the active class on the clicked item
+            this.classList.add('active');
+
+            // Set the selected file URL
+            selectedFile = this.getAttribute('data-url');
+        });
+    });
+
+    // Add click event listener to the download button
+    var downloadButton = document.getElementById('download-button');
+    downloadButton.addEventListener('click', function () {
+        if (selectedFile) {
+            // Create a temporary link element and click it to download the file
+            var link = document.createElement('a');
+            link.href = selectedFile;
+            link.download = selectedFile.split('/').pop();
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            // Show an error message if no file is selected
+            alert('Please select a file to download.');
+        }
+    });
+</script>
+{% endblock style %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="text-white">File Downloader</h1>
+    <ul class="file-list">
+        {% for link in download_links %}
+            <li class="bg-white d-flex align-items-center" style="width: fit-content;"><a href="{{ link }}" download>{{ link }}</a> <iconify-icon icon="material-symbols:cloud-download" class="ms-2" height="30" width="30"></iconify-icon>    </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock body %}

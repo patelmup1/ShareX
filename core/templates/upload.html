@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Upload{% endblock %}
+{% block style %}
+<style>
+body{
+ background: rgb(166,227,225);
+ background: linear-gradient(90deg, rgba(166,227,225,1) 2%, rgba(121,9,88,1) 44%, rgba(0,212,255,1) 100%);
+} 
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="container d-flex justify-content-center align-items-center">
+  <br class="mt-2">
+  <div class="contanier bg-white rounded-4 mt-5">
+    <div id="file-uploader1" class="wrapper js"></div>
+  
+    <script type="text/template" id="file-uploader-template">
+      <br class="mt-3">
+      <div class="file-upload mt-5">
+        <button class="file-add-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Files</button>
+        <form class="js--upload-form is-droppable" method="post" enctype="multipart/form-data" action="{% url 'upload_files' %}">
+          {% csrf_token %}
+          <span class="text--center">
+            <div class="drag-text">
+              <h3>Drag and drop a file</h3>
+            </div>
+            <input type="file" name="files" id="file" class="js--basic-upload hide file-upload-input" data-multiple-caption="{count} files selected" multiple>
+          
+          </span>
+          <table class="js--files-list" border="0"></table>
+          <button class="file-upload-btn-1" type="submit">Upload Files</button>
+        </form>
+        
+      </div>
+      
+    </script>
+    
+    <script type="text/template" id="document-item-view">
+      <div class="container">
+        <div class="row">
+          <a href="<%= data %>" download="<%= name %>" target="_blank"><%= name %></a>
+          <button class="btn btn--link js--remove-file"><i class="fa fa-times-circle"></i></button>
+        </div>
+      </div>
+    </script>
+  </div>
+</div>
+
+
+{% endblock body %}
+
+{% block script%}
+<script src="{% static 'index.js' %}"></script>
+{% endblock script%}

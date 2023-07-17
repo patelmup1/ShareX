@@ -1,0 +1,11 @@
+Lib
+Scripts
+__pycache__
+migrations
+temp
+Include
+Designs
+.env
+/venv
+pyvenv.cfg
+test.py
